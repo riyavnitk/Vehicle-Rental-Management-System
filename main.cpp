@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 class Vehicle {
 public:
     // Default Constructors
@@ -38,6 +39,8 @@ public:
     bool getVehicleStatus() {
         return this->vehicleStatus;
     }
+    // Destructor
+    ~Vehicle() {}
 private:
     string vehicleNumberPlate; // unique
     string vehicleType; // car, bike, etc.
@@ -89,6 +92,8 @@ public:
     int getAge() {
         return this->age;
     }
+    // Destructor
+    ~Customer() {}
 private:
     int customerId;
     string name;
@@ -149,6 +154,8 @@ public:
     int getDiscount() {
         return this->discount;
     }
+    // Destructor
+    ~Order() {}
 private:
     Vehicle vehicle;
     Customer customer;
@@ -216,3 +223,4 @@ int main() {
 
     return 0;
 }
+
