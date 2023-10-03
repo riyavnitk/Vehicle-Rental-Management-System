@@ -61,7 +61,8 @@ private:
     int month; // 1-12
     int year; // 2023 - present
 
-    int countLeapYears(Date d) {
+    // Inline function to count leap years
+    static inline int countLeapYears(Date d) {
         int years = d.year;
         if (d.month <= 2)
             years--;
@@ -81,7 +82,8 @@ public:
         this->vehicleRent = vehicleRent;
         this->vehicleStatus = vehicleStatus; 
     }
-
+    // Static variable to keep track
+    static int count;
     // Mutators
     void setVehicleNumberPlate(string vehicleNumberPlate) {
         this->vehicleNumberPlate = vehicleNumberPlate; 
