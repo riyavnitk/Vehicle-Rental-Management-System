@@ -50,7 +50,7 @@ public:
             n2 += monthDays[i];
         n2 += countLeapYears(date);
 
-        difference = n2 - n1;
+        difference = n1 - n2;
         return difference;
     }
 
@@ -70,6 +70,16 @@ private:
     }
 };
 
+Date inputDate(string dateformat) {
+    int day, month, year;
+    day = stoi(dateformat.substr(0, dateformat.find('-')));
+    month = stoi(dateformat.substr(dateformat.find('-') + 1, dateformat.find_last_of('-') - dateformat.find('-') - 1));
+    year = stoi(dateformat.substr(dateformat.find_last_of('-') + 1));
+    Date date(day, month, year);
+    return date;
+}
+
+
 // Vehicle class
 class Vehicle {
 public:
@@ -86,21 +96,24 @@ public:
     static int count;
     // Mutators
     void setVehicleNumberPlate(string vehicleNumberPlate) {
-        this->vehicleNumberPlate = vehicleNumberPlate; 
+        vehicleNumberPlate = vehicleNumberPlate; 
     }
     void setVehicleType(string vehicleType) {
-        this->vehicleType = vehicleType;
+        vehicleType = vehicleType;
     }
     void setVehicleRent(double vehicleRent) {
-        this->vehicleRent = vehicleRent;
+        vehicleRent = vehicleRent;
     }
     void setVehicleStatus(bool vehicleStatus) {
-        this->vehicleStatus = vehicleStatus;
+        vehicleStatus = vehicleStatus;
+    }
+    void setVehicleName(string vehicleName) {
+        vehicleName = vehicleName;
     }
 
     // Accessors
     string getVehicleNumberPlate() {
-        return this->vehicleNumberPlate;
+        return vehicleNumberPlate;
     }
     string getVehicleType() {
         return this->vehicleType;
@@ -111,37 +124,87 @@ public:
     bool getVehicleStatus() {
         return this->vehicleStatus;
     }
+    string getVehicleName() {
+        return this->vehicleName;
+    }
 
     // Destructor
     ~Vehicle() {}
 private:
     string vehicleNumberPlate; // unique
+    string vehicleName; // name of the vehicle
     string vehicleType; // car, bike, etc.
     double vehicleRent; // per day
     bool vehicleStatus; // true if available, false if not
 };
 
-// Copy constructor for a scooter
-class Scooter {
-    Vehicle* v = new Vehicle(vehicleNumberPlate, vehicleType, vehicleRent, vehicleStatus); // dynamic memory allocation
-private:
-    Vehicle* vehicle = v; // copy constructor
-    string vehicleNumberPlate = "KA 20 SC 1234"; // unique
-    string vehicleType = "Scooter"; 
-    double vehicleRent = 410; // per day
-    bool vehicleStatus = true; // true if available
+// Scooter class inheriting from Vehicle class
+class Scooter : public Vehicle {
+public:
+    // Default Constructor
+    Scooter() {
+        setVehicleType("Scooter");
+    }
+    // Parameterized Constructor
+    Scooter(string numberPlate, string name, double rent, bool status) {
+        setVehicleType("Scooter");
+        setVehicleNumberPlate(numberPlate);
+        setVehicleName(name);
+        setVehicleRent(rent);
+        setVehicleStatus(status);
+    }
 };
 
-// Copy constructor for a bike
-class Bike {
-    Vehicle* v = new Vehicle(vehicleNumberPlate, vehicleType, vehicleRent, vehicleStatus); // dynamic memory allocation
-private:
-    Vehicle* vehicle = v; // copy constructor
-    string vehicleNumberPlate = "KA 20 BK 4774"; // unique
-    string vehicleType = "Bike";
-    double vehicleRent = 530; // per day
-    bool vehicleStatus = false; // false if not available
+// Car class inheriting from Vehicle class
+class Bike : public Vehicle {
+public:
+    Bike() {
+        setVehicleType("Bike");
+    }
+    Bike(string numberPlate, string name, double rent, bool status) {
+        setVehicleType("Bike");
+        setVehicleNumberPlate(numberPlate);
+        setVehicleName(name);
+        setVehicleRent(rent);
+        setVehicleStatus(status);
+    }
 };
+
+// An array for all the scooters available
+int scooters_size = 2;
+Scooter* scooters = new Scooter[50] {
+    Scooter("MH 12 AB 1234", "Scooter 1", 100.0, true),
+    Scooter("MH 12 AB 1235", "Scooter 2", 100.0, true)
+};
+
+int bikes_size = 2;
+Bike* bikes = new Bike[50] {
+    Bike("MH 12 AB 1236", "Bike 1", 200.0, true),
+    Bike("MH 12 AB 1237", "Bike 2", 200.0, true)
+};
+
+Vehicle checkAvailability(string type) {
+    if(type == "Scooter") {
+        for(int i = 0; i < 2; i++) {
+            if(scooters[i].getVehicleStatus()) {
+                cout << scooters[i].getVehicleName() << endl;
+                return scooters[i];
+            }
+        }
+    }
+    else if(type == "Bike") {
+        for(int i = 0; i < 2; i++) {
+            if(bikes[i].getVehicleStatus()) {
+                cout << bikes[i].getVehicleName() << endl;
+                return bikes[i];
+            }
+        }
+    }
+    cout << "No available vehicles for rentals" << endl;
+    exit(0);
+}
+
+
 
 // Customer class
 class Customer {
@@ -190,7 +253,6 @@ public:
     int getAge() {
         return this->age;
     }
-
     // Destructor
     ~Customer() {}
 private:
@@ -205,6 +267,16 @@ class Order {
 public:
     // Default Constructor
     Order() {}
+    // Parameterized Constructor
+    Order(Vehicle v, Customer c, Date sd, Date ed, string mod, Date dop) {
+        this->vehicle = v;
+        this->customer = c;
+        this->startDate = sd;
+        this->endDate = ed;
+        this->duration = getDuration(sd, ed);
+        this->modeOfPayment = mod;
+        this->dateOfPayment = dop;
+    }
 
     // Mutators
     void setVehicle(Vehicle vehicle) {
@@ -216,9 +288,6 @@ public:
     void setStartDate(Date startDate) {
         this->startDate = startDate;
     }
-    void setDuration(int duration) {
-        this->duration = duration;
-    }
     void setTotalRent(double totalRent) {
         this->totalRent = totalRent;
     }
@@ -227,9 +296,6 @@ public:
     }
     void setDateOfPayment(Date dateOfPayment) {
         this->dateOfPayment = dateOfPayment;
-    }
-    void setDiscount(int discount) {
-        this->discount = discount;
     }
 
     // Accessors
@@ -243,7 +309,7 @@ public:
         return this->startDate;
     }
     int getDuration(Date& startDate, Date& endDate) {
-        this->duration = startDate - endDate;
+        this->duration = endDate - startDate;
         return this->duration;
     }
     double getTotalRent() {
@@ -255,8 +321,23 @@ public:
     Date getDateOfPayment() {
         return this->dateOfPayment;
     }
-    int getDiscount() {
-        return this->discount;
+
+    void printOrder() {
+        cout << "--------------------------------" << endl;
+        cout << "             Order              " << endl;
+        cout << "--------------------------------" << endl;
+        cout << "Vehicle Number Plate: " << this->vehicle.getVehicleNumberPlate() << endl;
+        cout << "Vehicle Name: " << this->vehicle.getVehicleName() << endl;
+        cout << "Vehicle Type: " << this->vehicle.getVehicleType() << endl;
+        cout << "Vehicle Rent: " << this->vehicle.getVehicleRent() << endl;
+        cout << "Vehicle Status: " << this->vehicle.getVehicleStatus() << endl;
+        cout << "Customer Id: " << this->customer.getCustomerId() << endl;
+        cout << "Customer Name: " << this->customer.getName() << endl;
+        cout << "Customer Phone: " << this->customer.getPhone() << endl;
+        cout << "Customer Address: " << this->customer.getAddress() << endl;
+        cout << "Customer Age: " << this->customer.getAge() << endl;
+        cout << "Start Date: " << this->startDate.getDay() << "-" << this->startDate.getMonth() << "-" << this->startDate.getYear() << endl;
+        cout << "End Date: " << this->endDate.getDay() << "-" << this->endDate.getMonth() << "-" << this->endDate.getYear() << endl;
     }
 
     friend class Date; // to access getDifference
@@ -274,8 +355,6 @@ private:
     double totalRent;
     string modeOfPayment;
     Date dateOfPayment; // dd/mm/yyyy
-    int discount;
-    int finePerHour = 50;
 };
 
 class Authentication {
@@ -299,11 +378,98 @@ bool Authentication::authenticate(const string& username,const string& password)
     }
 }
 
-/*
-double operator*(Vehicle& vehicle, Order& order) {
-    return vehicle.getVehicleRent() * (double)order.getDuration();
+// Register a new customer
+Customer registerCustomer() {
+    cout << "--------------------------------" << endl;
+    cout << "    Register a new customer     " << endl;
+    cout << "--------------------------------" << endl;
+    cout << "Enter customer id: ";
+    int customerId; cin >> customerId;
+    cout << endl;
+    cout << "Enter name: ";
+    string name; cin >> name;
+    cout << endl;
+    cout << "Enter phone: ";
+    string phone; cin >> phone;
+    cout << endl;
+    cout << "Enter address: ";
+    string address; cin >> address;
+    cout << endl;
+    cout << "Enter age: ";
+    int age; cin >> age;
+    cout << endl;
+    Customer customer(customerId, name, phone, address, age);
+    cout << "Customer registered successfully!" << endl;
+    return customer;
 }
-*/
+
+// Register a new vehicle
+void registerVehicle() {
+    cout << "--------------------------------" << endl;
+    cout << "    Register a new vehicle      " << endl;
+    cout << "--------------------------------" << endl;
+    cout << "Select your vehicle type:" << endl;
+    cout << "(a) Bike" << endl;
+    cout << "(b) Scooter" << endl;
+    cout << "Enter the vehicle type (a/b): ";
+    char ch; cin >> ch; cout << endl;
+    cout << "Enter vehicle number plate: ";
+    string vehicleNumberPlate; cin >> vehicleNumberPlate;
+    cout << endl;
+    cout << "Enter vehicle name: " << endl;
+    string vehicleName; cin >> vehicleName;
+    cout << endl;
+    cout << "Enter vehicle rent: ";
+    double vehicleRent; cin >> vehicleRent;
+    cout << endl;
+    cout << "Enter vehicle status (1 for available, 0 for not available): ";
+    bool vehicleStatus; cin >> vehicleStatus;
+    cout << endl;
+    cout << "Enter the vehicle type:" << endl;
+    cout << "(a) Bike" << endl;
+    cout << "(b) Scooter" << endl;
+    cout << "(a / b) ? " << endl;
+    string vehicleType; cin >> vehicleType;
+    if(vehicleType == "a") {
+        Bike* b = new Bike(vehicleNumberPlate, vehicleName, vehicleRent, vehicleStatus);
+        bikes[++bikes_size] = *b;
+    } else if(vehicleType == "b") {
+        Scooter* sc = new Scooter(vehicleNumberPlate, vehicleName, vehicleRent, vehicleStatus);
+    }
+    cout << "Vehicle registered successfully!" << endl;
+    cout << "\n\n\n" << endl;
+}
+
+// Create an order
+void createOrder() {
+    cout << "--------------------------------" << endl;
+    cout << "        Create an order         " << endl;
+    cout << "--------------------------------" << endl;
+    cout << "Enter vehicle type(Scooter/Bike): ";
+    string vehicleType; cin >> vehicleType;
+    Vehicle vehicle = checkAvailability(vehicleType);
+    cout << endl;
+    Customer c = registerCustomer();
+    cout << endl;
+    cout << "Enter start date (dd-mm-yyyy): ";
+    string startDate; cin >> startDate;
+    Date sd = inputDate(startDate);
+    cout << endl;
+    cout << "Enter end date (dd-mm-yyyy): ";
+    string endDate; cin >> endDate;
+    Date ed = inputDate(endDate);
+    cout << endl;
+    cout << "Enter mode of payment: ";
+    string modeOfPayment; cin >> modeOfPayment;
+    cout << endl;
+    cout << "Enter date of payment: ";
+    string dateOfPayment; cin >> dateOfPayment;
+    Date dop = inputDate(dateOfPayment);
+    cout << endl;
+    Order order(vehicle, c, sd, ed, modeOfPayment, dop);
+    cout << "Order created successfully!" << endl;
+    cout << "\n\n\n" << endl;
+}
 
 
 int main() {
@@ -355,27 +521,7 @@ int main() {
     switch(choice) {
         case 1: {
             // Register a new customer
-            cout << "--------------------------------" << endl;
-            cout << "    Register a new customer     " << endl;
-            cout << "--------------------------------" << endl;
-            cout << "Enter customer id: ";
-            int customerId; cin >> customerId;
-            cout << endl;
-            cout << "Enter name: ";
-            string name; cin >> name;
-            cout << endl;
-            cout << "Enter phone: ";
-            string phone; cin >> phone;
-            cout << endl;
-            cout << "Enter address: ";
-            string address; cin >> address;
-            cout << endl;
-            cout << "Enter age: ";
-            int age; cin >> age;
-            cout << endl;
-            Customer customer(customerId, name, phone, address, age);
-            cout << "Customer registered successfully!" << endl;
-            cout << "\n\n\n" << endl;
+            registerCustomer();
             break;
         }
         case 2: {
@@ -449,6 +595,11 @@ int main() {
             break;
         }
     }
+
+    
+    // Make a scooter array and check availability
+    // If available, make an order
+    // Else, display all available scooters
 
     return 0;
 }
