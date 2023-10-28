@@ -183,6 +183,19 @@ Bike* bikes = new Bike[50] {
     Bike("MH 12 AB 1237", "Bike 2", 200.0, true)
 };
 
+// An array to store customers and orders
+int customers_size = 2;
+Customer* customers = new Customer[50] {
+    Customer(1, "Customer 1", "1234567890", "Address 1", 20),
+    Customer(2, "Customer 2", "1234567891", "Address 2", 21)
+};
+
+int orders_size = 2;
+Order* orders = new Order[50] {
+    Order(scooters[0], customers[0], Date(1, 4, 2023), Date(2, 7, 2023), "Cash", Date(2, 4, 2023)),
+    Order(scooters[1], customers[1], Date(1, 5, 2023), Date(2, 11, 2023), "Cash", Date(2, 5, 2023))
+};
+
 Vehicle checkAvailability(string type) {
     if(type == "Scooter") {
         for(int i = 0; i < 2; i++) {
@@ -471,6 +484,77 @@ void createOrder() {
     cout << "\n\n\n" << endl;
 }
 
+// View all customers
+void viewAllCustomers() {
+    cout << "--------------------------------" << endl;
+    cout << "        View all customers      " << endl;
+    cout << "--------------------------------" << endl;
+    // Access elemts of customers array
+    for(int i = 0; i < customers_size; i++) {
+        cout << "Customer " << i + 1 << endl;
+        cout << "Customer Id: " << customers[i].getCustomerId() << endl;
+        cout << "Customer Name: " << customers[i].getName() << endl;
+        cout << "Customer Phone: " << customers[i].getPhone() << endl;
+        cout << "Customer Address: " << customers[i].getAddress() << endl;
+        cout << "Customer Age: " << customers[i].getAge() << endl;
+        cout << "\n\n" << endl;
+    }
+    cout << "\n\n\n" << endl;
+}
+
+// View all vehicles
+void viewAllVehicles() {
+    cout << "--------------------------------" << endl;
+    cout << "        View all vehicles       " << endl;
+    cout << "--------------------------------" << endl;
+    // Access elemts of vehicles array
+    // Scooters
+    for(int i = 0; i < scooters_size; i++) {
+        cout << "Vehicle " << i + 1 << endl;
+        cout << "Vehicle Number Plate: " << scooters[i].getVehicleNumberPlate() << endl;
+        cout << "Vehicle Name: " << scooters[i].getVehicleName() << endl;
+        cout << "Vehicle Type: " << scooters[i].getVehicleType() << endl;
+        cout << "Vehicle Rent: " << scooters[i].getVehicleRent() << endl;
+        cout << "Vehicle Status: " << scooters[i].getVehicleStatus() << endl;
+        cout << "\n\n" << endl;
+    }
+    // Bikes
+    for(int i = 0; i < bikes_size; i++) {
+        cout << "Vehicle " << i + 1 << endl;
+        cout << "Vehicle Number Plate: " << bikes[i].getVehicleNumberPlate() << endl;
+        cout << "Vehicle Name: " << bikes[i].getVehicleName() << endl;
+        cout << "Vehicle Type: " << bikes[i].getVehicleType() << endl;
+        cout << "Vehicle Rent: " << bikes[i].getVehicleRent() << endl;
+        cout << "Vehicle Status: " << bikes[i].getVehicleStatus() << endl;
+        cout << "\n\n" << endl;
+    }
+    cout << "\n\n\n" << endl;
+}
+
+// View all orders
+void viewAllOrders() {
+    cout << "--------------------------------" << endl;
+    cout << "        View all orders         " << endl;
+    cout << "--------------------------------" << endl;
+    // Access elemts of orders array
+    for(int i = 0; i < orders_size; i++) {
+        cout << "Order " << i + 1 << endl;
+        cout << "Vehicle Number Plate: " << orders[i].getVehicle().getVehicleNumberPlate() << endl;
+        cout << "Vehicle Name: " << orders[i].getVehicle().getVehicleName() << endl;
+        cout << "Vehicle Type: " << orders[i].getVehicle().getVehicleType() << endl;
+        cout << "Vehicle Rent: " << orders[i].getVehicle().getVehicleRent() << endl;
+        cout << "Vehicle Status: " << orders[i].getVehicle().getVehicleStatus() << endl;
+        cout << "Customer Id: " << orders[i].getCustomer().getCustomerId() << endl;
+        cout << "Customer Name: " << orders[i].getCustomer().getName() << endl;
+        cout << "Customer Phone: " << orders[i].getCustomer().getPhone() << endl;
+        cout << "Customer Address: " << orders[i].getCustomer().getAddress() << endl;
+        cout << "Customer Age: " << orders[i].getCustomer().getAge() << endl;
+        cout << "Start Date: " << orders[i].getStartDate().getDay() << "-" << orders[i].getStartDate().getMonth() << "-" << orders[i].getStartDate().getYear() << endl;
+        cout << "End Date: " << orders[i].getEndDate().getDay() << "-" << orders[i].getEndDate().getMonth() << "-" << orders[i].getEndDate().getYear() << endl;
+        cout << "\n\n" << endl;
+    }
+    cout << "\n\n\n" << endl;
+}
 
 int main() {
 
@@ -526,81 +610,35 @@ int main() {
         }
         case 2: {
             // Register a new vehicle
-            cout << "--------------------------------" << endl;
-            cout << "     Register a new vehicle     " << endl;
-            cout << "--------------------------------" << endl;
-            cout << "Enter vehicle number plate: ";
-            string vehicleNumberPlate; cin >> vehicleNumberPlate;
-            cout << endl;
-            cout << "Enter vehicle type: ";
-            string vehicleType; cin >> vehicleType;
-            cout << endl;
-            cout << "Enter vehicle rent: ";
-            double vehicleRent; cin >> vehicleRent;
-            cout << endl;
-            cout << "Enter vehicle status (1 for available, 0 for not available): ";
-            bool vehicleStatus; cin >> vehicleStatus;
-            cout << endl;
-            Vehicle vehicle(vehicleNumberPlate, vehicleType, vehicleRent, vehicleStatus);
-            cout << "Vehicle registered successfully!" << endl;
-            cout << "\n\n\n" << endl;
+            registerVehicle();
             break;
         }
         case 3: {
             // Create an order
-            cout << "--------------------------------" << endl;
-            cout << "        Create an order         " << endl;
-            cout << "--------------------------------" << endl;
-            cout << "Enter vehicle number plate: ";
-            string vehicleNumberPlate; cin >> vehicleNumberPlate;
-            cout << endl;
-            cout << "Enter customer id: ";
-            int customerId; cin >> customerId;
-            cout << endl;
-            cout << "Enter start date: ";
-            string startDate;
-            cin >> startDate;
-            cout << endl;
-            cout << "Enter duration: ";
-            int duration; cin >> duration;
-            cout << endl;
-            cout << "Enter total rent: ";
-            double totalRent; cin >> totalRent;
-            cout << endl;
-            cout << "Enter mode of payment: ";
-            string modeOfPayment; cin >> modeOfPayment;
-            cout << endl;
-            cout << "Enter date of payment: ";
-            string dateOfPayment; cin >> dateOfPayment;
-            cout << endl;
-            cout << "Enter discount: ";
-            int discount; cin >> discount;
-            cout << endl;
-            Order order;
-            cout << "Order created successfully!" << endl;
-            cout << "\n\n\n" << endl;
+            createOrder();
             break;
         }
         case 4: {
             // View all orders
-            cout << "--------------------------------" << endl;
-            cout << "         View all orders        " << endl;
-            cout << "--------------------------------" << endl;
-            cout << "Order 1" << endl;
-            cout << "Order 2" << endl;
-            cout << "Order 3" << endl;
-            cout << "Order 4" << endl;
-            cout << "Order 5" << endl;
-            cout << "\n\n\n" << endl;
+            viewAllOrders();
             break;
         }
+        case 5: {
+            // View all customers
+            viewAllCustomers();
+            break;
+        }
+        case 6: {
+            // View all vehicles
+            viewAllVehicles();
+            break;
+        }
+        case 7: {
+            // Exit
+            cout << "Exiting..." << endl;
+            return 0;
+        }
     }
-
-    
-    // Make a scooter array and check availability
-    // If available, make an order
-    // Else, display all available scooters
-
     return 0;
 }
 
