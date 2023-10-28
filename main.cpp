@@ -607,42 +607,31 @@ int main() {
     cout << endl;
 
     // Admin menu choice handler
-    switch(choice) {
-        case 1: {
-            // Register a new customer
+    while(choice != 7) {
+        if(choice == 1) {
             registerCustomer();
-            break;
         }
-        case 2: {
-            // Register a new vehicle
+        else if(choice == 2) {
             registerVehicle();
-            break;
         }
-        case 3: {
-            // Create an order
+        else if(choice == 3) {
             createOrder();
-            break;
         }
-        case 4: {
-            // View all orders
+        else if(choice == 4) {
             viewAllOrders();
-            break;
         }
-        case 5: {
-            // View all customers
+        else if(choice == 5) {
             viewAllCustomers();
-            break;
         }
-        case 6: {
-            // View all vehicles
+        else if(choice == 6) {
             viewAllVehicles();
-            break;
         }
-        case 7: {
-            // Exit
-            cout << "Exiting..." << endl;
-            return 0;
+        else {
+            cout << "Invalid choice!" << endl;
         }
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cout << endl;
     }
     return 0;
 }
