@@ -412,6 +412,7 @@ Customer registerCustomer() {
     int age; cin >> age;
     cout << endl;
     Customer customer(customerId, name, phone, address, age);
+    customers[++customers_size] = customer;
     cout << "Customer registered successfully!" << endl;
     return customer;
 }
@@ -448,6 +449,7 @@ void registerVehicle() {
         bikes[++bikes_size] = *b;
     } else if(vehicleType == "b") {
         Scooter* sc = new Scooter(vehicleNumberPlate, vehicleName, vehicleRent, vehicleStatus);
+        scooters[++scooters_size] = *sc;
     }
     cout << "Vehicle registered successfully!" << endl;
     cout << "\n\n\n" << endl;
@@ -480,6 +482,7 @@ void createOrder() {
     Date dop = inputDate(dateOfPayment);
     cout << endl;
     Order order(vehicle, c, sd, ed, modeOfPayment, dop);
+    orders[++orders_size] = order;
     cout << "Order created successfully!" << endl;
     cout << "\n\n\n" << endl;
 }
