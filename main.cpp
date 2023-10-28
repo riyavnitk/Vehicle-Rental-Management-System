@@ -183,19 +183,6 @@ Bike* bikes = new Bike[50] {
     Bike("MH 12 AB 1237", "Bike 2", 200.0, true)
 };
 
-// An array to store customers and orders
-int customers_size = 2;
-Customer* customers = new Customer[50] {
-    Customer(1, "Customer 1", "1234567890", "Address 1", 20),
-    Customer(2, "Customer 2", "1234567891", "Address 2", 21)
-};
-
-int orders_size = 2;
-Order* orders = new Order[50] {
-    Order(scooters[0], customers[0], Date(1, 4, 2023), Date(2, 7, 2023), "Cash", Date(2, 4, 2023)),
-    Order(scooters[1], customers[1], Date(1, 5, 2023), Date(2, 11, 2023), "Cash", Date(2, 5, 2023))
-};
-
 Vehicle checkAvailability(string type) {
     if(type == "Scooter") {
         for(int i = 0; i < 2; i++) {
@@ -216,7 +203,6 @@ Vehicle checkAvailability(string type) {
     cout << "No available vehicles for rentals" << endl;
     exit(0);
 }
-
 
 
 // Customer class
@@ -325,6 +311,9 @@ public:
         this->duration = endDate - startDate;
         return this->duration;
     }
+    Date getEndDate() {
+        return this->endDate;
+    }
     double getTotalRent() {
         return this->totalRent;
     }
@@ -368,6 +357,19 @@ private:
     double totalRent;
     string modeOfPayment;
     Date dateOfPayment; // dd/mm/yyyy
+};
+
+// An array to store customers and orders
+int customers_size = 2;
+Customer* customers = new Customer[50] {
+    Customer(1, "Customer 1", "1234567890", "Address 1", 20),
+    Customer(2, "Customer 2", "1234567891", "Address 2", 21)
+};
+
+int orders_size = 2;
+Order* orders = new Order[50] {
+    Order(scooters[0], customers[0], Date(1, 4, 2023), Date(2, 7, 2023), "Cash", Date(2, 4, 2023)),
+    Order(scooters[1], customers[1], Date(1, 5, 2023), Date(2, 11, 2023), "Cash", Date(2, 5, 2023))
 };
 
 class Authentication {
