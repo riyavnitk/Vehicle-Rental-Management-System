@@ -135,13 +135,7 @@ public:
     }
 
     // Destructor
-    ~Vehicle() {
-        delete &vehicleNumberPlate;
-        delete &vehicleType;
-        delete &vehicleRent;
-        delete &vehicleStatus;
-        delete &vehicleName;
-    }
+    ~Vehicle() {}
 private:
     string vehicleNumberPlate; // unique
     string vehicleName; // name of the vehicle
@@ -182,34 +176,20 @@ public:
     }
 };
 
-// An array for all the scooters available
-int scooters_size = 2;
-Scooter* scooters = new Scooter[50] {
-    Scooter("MH 12 AB 1234", "Scooter 1", 100.0, true),
-    Scooter("MH 12 AB 1235", "Scooter 2", 100.0, true)
-};
-
-int bikes_size = 2;
-Bike* bikes = new Bike[50] {
-    Bike("MH 12 AB 1236", "Bike 1", 200.0, true),
-    Bike("MH 12 AB 1237", "Bike 2", 200.0, true)
+// An array for all the vehicles available
+int vehicles_size = 5;
+Vehicle* vehicles = new Vehicle[50] {
+    Scooter("MH 12 AB 1234", "Scooter", 100.0, true),
+    Scooter("MH 12 AB 1235", "Scooter", 100.0, true),
+    Bike("MH 12 AB 1236", "Bike", 200.0, true),
+    Bike("MH 12 AB 1237", "Bike", 200.0, true),
+    Vehicle("MH 12 AB 1238", "Car", 300.0, true)
 };
 
 Vehicle checkAvailability(string type) {
-    if(type == "Scooter") {
-        for(int i = 0; i < 2; i++) {
-            if(scooters[i].getVehicleStatus()) {
-                cout << scooters[i].getVehicleName() << endl;
-                return scooters[i];
-            }
-        }
-    }
-    else if(type == "Bike") {
-        for(int i = 0; i < 2; i++) {
-            if(bikes[i].getVehicleStatus()) {
-                cout << bikes[i].getVehicleName() << endl;
-                return bikes[i];
-            }
+    for(int i = 0; i < vehicles_size; i++) {
+        if(vehicles[i].getVehicleType() == type && vehicles[i].getVehicleStatus() == true) {
+            return vehicles[i];
         }
     }
     cout << "No available vehicles for rentals" << endl;
@@ -265,13 +245,7 @@ public:
         return this->age;
     }
     // Destructor
-    ~Customer() {
-        delete &customerId;
-        delete &name;
-        delete &phone;
-        delete &address;
-        delete &age;
-    }
+    ~Customer() {}
 private:
     int customerId; // unique
     string name; // name
@@ -350,39 +324,13 @@ public:
         return this->dateOfPayment;
     }
 
-    void printOrder() {
-        cout << "--------------------------------" << endl;
-        cout << "             Order              " << endl;
-        cout << "--------------------------------" << endl;
-        cout << "Vehicle Number Plate: " << this->vehicle.getVehicleNumberPlate() << endl;
-        cout << "Vehicle Name: " << this->vehicle.getVehicleName() << endl;
-        cout << "Vehicle Type: " << this->vehicle.getVehicleType() << endl;
-        cout << "Vehicle Rent: " << this->vehicle.getVehicleRent() << endl;
-        cout << "Vehicle Status: " << this->vehicle.getVehicleStatus() << endl;
-        cout << "Customer Id: " << this->customer.getCustomerId() << endl;
-        cout << "Customer Name: " << this->customer.getName() << endl;
-        cout << "Customer Phone: " << this->customer.getPhone() << endl;
-        cout << "Customer Address: " << this->customer.getAddress() << endl;
-        cout << "Customer Age: " << this->customer.getAge() << endl;
-        cout << "Start Date: " << this->startDate.getDay() << "-" << this->startDate.getMonth() << "-" << this->startDate.getYear() << endl;
-        cout << "End Date: " << this->endDate.getDay() << "-" << this->endDate.getMonth() << "-" << this->endDate.getYear() << endl;
-    }
-
+    // Friend classes
     friend class Date; // to access getDifference
     friend class Vehicle; // to access vehicleStatus
     friend class Customer; // to access customerId
     
     // Destructor
-    ~Order() {
-        delete &vehicle;
-        delete &customer;
-        delete &startDate;
-        delete &endDate;
-        delete &duration;
-        delete &totalRent;
-        delete &modeOfPayment;
-        delete &dateOfPayment;
-    }
+    ~Order() {}
 private:
     Vehicle vehicle;
     Customer customer;
@@ -419,11 +367,26 @@ public:
     double getTotalRent() {
         return this->totalRent;
     }
-    // Destructor
-    ~Bill() {
-        delete &order;
-        delete &totalRent;
+    void printOrder() {
+        cout << "--------------------------------" << endl;
+        cout << "             Bill               " << endl;
+        cout << "--------------------------------" << endl;
+        cout << "Vehicle Number Plate: " << this->order.getVehicle().getVehicleNumberPlate() << endl;
+        cout << "Vehicle Name: " << this->order.getVehicle().getVehicleName() << endl;
+        cout << "Vehicle Type: " << this->order.getVehicle().getVehicleType() << endl;
+        cout << "Vehicle Rent: " << this->order.getVehicle().getVehicleRent() << endl;
+        cout << "Vehicle Status: " << this->order.getVehicle().getVehicleStatus() << endl;
+        cout << "Customer Id: " << this->order.getCustomer().getCustomerId() << endl;
+        cout << "Customer Name: " << this->order.getCustomer().getName() << endl;
+        cout << "Customer Phone: " << this->order.getCustomer().getPhone() << endl;
+        cout << "Customer Address: " << this->order.getCustomer().getAddress() << endl;
+        cout << "Customer Age: " << this->order.getCustomer().getAge() << endl;
+        cout << "Start Date: " << this->order.getStartDate().getDay() << "-" << this->order.getStartDate().getMonth() << "-" << this->order.getStartDate().getYear() << endl;
+        cout << "End Date: " << this->order.getEndDate().getDay() << "-" << this->order.getEndDate().getMonth() << "-" << this->order.getEndDate().getYear() << endl;
+        cout << "Total Rent: " << this->totalRent << endl;
     }
+    // Destructor
+    ~Bill() {}
 private:
     Order order;
     double totalRent;
@@ -439,8 +402,8 @@ Customer* customers = new Customer[50] {
 
 int orders_size = 2;
 Order* orders = new Order[50] {
-    Order(scooters[0], customers[0], Date(1, 4, 2023), Date(2, 7, 2023), "Cash", Date(2, 4, 2023)),
-    Order(scooters[1], customers[1], Date(1, 5, 2023), Date(2, 11, 2023), "Cash", Date(2, 5, 2023))
+    Order(vehicles[0], customers[0], Date(1, 4, 2023), Date(2, 7, 2023), "Cash", Date(2, 4, 2023)),
+    Order(vehicles[1], customers[1], Date(1, 5, 2023), Date(2, 11, 2023), "Cash", Date(2, 5, 2023))
 };
 
 class Authentication {
@@ -519,10 +482,10 @@ void registerVehicle() {
     string vehicleType; cin >> vehicleType;
     if(vehicleType == "a") {
         Bike* b = new Bike(vehicleNumberPlate, vehicleName, vehicleRent, vehicleStatus);
-        bikes[++bikes_size] = *b;
+        vehicles[++vehicles_size] = *b;
     } else if(vehicleType == "b") {
         Scooter* sc = new Scooter(vehicleNumberPlate, vehicleName, vehicleRent, vehicleStatus);
-        scooters[++scooters_size] = *sc;
+        vehicles[++vehicles_size] = *sc;
     }
     cout << "Vehicle registered successfully!" << endl;
     cout << "\n\n\n" << endl;
@@ -557,6 +520,9 @@ void createOrder() {
     Order order(vehicle, c, sd, ed, modeOfPayment, dop);
     orders[++orders_size] = order;
     cout << "Order created successfully!" << endl;
+    // Generate bill
+    Bill bill(order);
+    bill.printOrder();
     cout << "\n\n\n" << endl;
 }
 
@@ -583,25 +549,14 @@ void viewAllVehicles() {
     cout << "--------------------------------" << endl;
     cout << "        View all vehicles       " << endl;
     cout << "--------------------------------" << endl;
-    // Access elemts of vehicles array
-    // Scooters
-    for(int i = 0; i < scooters_size; i++) {
+    // Access elements of vehicles array
+    for(int i = 0; i < vehicles_size; i++) {
         cout << "Vehicle " << i + 1 << endl;
-        cout << "Vehicle Number Plate: " << scooters[i].getVehicleNumberPlate() << endl;
-        cout << "Vehicle Name: " << scooters[i].getVehicleName() << endl;
-        cout << "Vehicle Type: " << scooters[i].getVehicleType() << endl;
-        cout << "Vehicle Rent: " << scooters[i].getVehicleRent() << endl;
-        cout << "Vehicle Status: " << scooters[i].getVehicleStatus() << endl;
-        cout << "\n\n" << endl;
-    }
-    // Bikes
-    for(int i = 0; i < bikes_size; i++) {
-        cout << "Vehicle " << i + 1 << endl;
-        cout << "Vehicle Number Plate: " << bikes[i].getVehicleNumberPlate() << endl;
-        cout << "Vehicle Name: " << bikes[i].getVehicleName() << endl;
-        cout << "Vehicle Type: " << bikes[i].getVehicleType() << endl;
-        cout << "Vehicle Rent: " << bikes[i].getVehicleRent() << endl;
-        cout << "Vehicle Status: " << bikes[i].getVehicleStatus() << endl;
+        cout << "Vehicle Number Plate: " << vehicles[i].getVehicleNumberPlate() << endl;
+        cout << "Vehicle Name: " << vehicles[i].getVehicleName() << endl;
+        cout << "Vehicle Type: " << vehicles[i].getVehicleType() << endl;
+        cout << "Vehicle Rent: " << vehicles[i].getVehicleRent() << endl;
+        cout << "Vehicle Status: " << vehicles[i].getVehicleStatus() << endl;
         cout << "\n\n" << endl;
     }
     cout << "\n\n\n" << endl;
