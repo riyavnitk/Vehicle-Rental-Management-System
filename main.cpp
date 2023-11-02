@@ -12,6 +12,12 @@ public:
         this->month = month;
         this->year = year;
     }
+    // Copy constructor
+    Date(const Date& date) {
+        this->day = date.day;
+        this->month = date.month;
+        this->year = date.year;
+    }
 
     // Mutators
     void setDay(int day) { 
@@ -129,7 +135,13 @@ public:
     }
 
     // Destructor
-    ~Vehicle() {}
+    ~Vehicle() {
+        delete &vehicleNumberPlate;
+        delete &vehicleType;
+        delete &vehicleRent;
+        delete &vehicleStatus;
+        delete &vehicleName;
+    }
 private:
     string vehicleNumberPlate; // unique
     string vehicleName; // name of the vehicle
@@ -253,7 +265,13 @@ public:
         return this->age;
     }
     // Destructor
-    ~Customer() {}
+    ~Customer() {
+        delete &customerId;
+        delete &name;
+        delete &phone;
+        delete &address;
+        delete &age;
+    }
 private:
     int customerId; // unique
     string name; // name
@@ -265,7 +283,15 @@ private:
 class Order {
 public:
     // Default Constructor
-    Order() {}
+    Order() {
+        this->vehicle = Vehicle();
+        this->customer = Customer();
+        this->startDate = Date();
+        this->endDate = Date();
+        this->duration = 0;
+        this->modeOfPayment = "Cash";
+        this->dateOfPayment = Date();
+    }
     // Parameterized Constructor
     Order(Vehicle v, Customer c, Date sd, Date ed, string mod, Date dop) {
         this->vehicle = v;
@@ -304,14 +330,14 @@ public:
     Customer getCustomer() {
         return this->customer;
     }
-    Date getStartDate() {
+    Date& getStartDate() {
         return this->startDate;
     }
     int getDuration(Date& startDate, Date& endDate) {
         this->duration = endDate - startDate;
         return this->duration;
     }
-    Date getEndDate() {
+    Date& getEndDate() {
         return this->endDate;
     }
     double getTotalRent() {
@@ -347,7 +373,16 @@ public:
     friend class Customer; // to access customerId
     
     // Destructor
-    ~Order() {}
+    ~Order() {
+        delete &vehicle;
+        delete &customer;
+        delete &startDate;
+        delete &endDate;
+        delete &duration;
+        delete &totalRent;
+        delete &modeOfPayment;
+        delete &dateOfPayment;
+    }
 private:
     Vehicle vehicle;
     Customer customer;
@@ -358,6 +393,42 @@ private:
     string modeOfPayment;
     Date dateOfPayment; // dd/mm/yyyy
 };
+
+// Bill class
+class Bill : public Bike, public Scooter {
+public:
+    // Default Constructor
+    Bill() {}
+    // Parameterized Constructor
+    Bill(Order& order) {
+        this->setOrder(order);
+        double totalRent = order.getDuration(order.getStartDate(), order.getEndDate()) * order.getVehicle().getVehicleRent();
+        this->setTotalRent(totalRent);
+    }
+    // Mutators
+    void setOrder(Order& order) {
+        this->order = order;
+    }
+    void setTotalRent(double totalRent) {
+        this->totalRent = totalRent;
+    }
+    // Accessors
+    Order& getOrder() {
+        return this->order;
+    }
+    double getTotalRent() {
+        return this->totalRent;
+    }
+    // Destructor
+    ~Bill() {
+        delete &order;
+        delete &totalRent;
+    }
+private:
+    Order order;
+    double totalRent;
+};
+
 
 // An array to store customers and orders
 int customers_size = 2;
