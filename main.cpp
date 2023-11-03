@@ -41,19 +41,19 @@ public:
     // Accessors
     int getDay()
     {
-        return this->day;
+        return day;
     }
     int getMonth()
     {
-        return this->month;
+        return month;
     }
     int getYear()
     {
-        return this->year;
+        return year;
     }
 
     // Operator overloading to get difference between two dates
-    int operator-(Date &date)
+    int operator-(const Date &date) const
     {
         const int monthDays[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -102,6 +102,8 @@ Date inputDate(string dateformat)
     year = stoi(dateformat.substr(dateformat.find_last_of('-') + 1));
     Date date(day, month, year);
     return date;
+    // Date *date = new Date(day, month, year);
+    // return *date;
 }
 
 // Vehicle class
@@ -113,13 +115,15 @@ public:
     {
         this->vehicleNumberPlate = "XX XX XX XXXX";
         this->vehicleType = "XXXXX";
+        // this->vehicleName = "XXX";
         this->vehicleRent = 0.0;
         this->vehicleStatus = false;
     }
     // Parameterized Constructor
-    Vehicle(string vehicleNumberPlate, string vehicleType, double vehicleRent, bool vehicleStatus)
+    Vehicle(const string &vehicleNumberPlate, const string &vehicleType, double vehicleRent, bool vehicleStatus)
     {
         this->vehicleNumberPlate = vehicleNumberPlate;
+        // this->vehicleName = vehicleName;
         this->vehicleType = vehicleType;
         this->vehicleRent = vehicleRent;
         this->vehicleStatus = vehicleStatus;
@@ -129,34 +133,38 @@ public:
     // Mutators
     void setVehicleNumberPlate(string vehicleNumberPlate)
     {
-        vehicleNumberPlate = vehicleNumberPlate;
+        this->vehicleNumberPlate = vehicleNumberPlate;
     }
     void setVehicleType(string vehicleType)
     {
-        vehicleType = vehicleType;
+        this->vehicleType = vehicleType;
     }
+    // void setVehicleName(string vehicleName)
+    // {
+    //     this->vehicleName = vehicleName;
+    // }
     void setVehicleRent(double vehicleRent)
     {
-        vehicleRent = vehicleRent;
+        this->vehicleRent = vehicleRent;
     }
     void setVehicleStatus(bool vehicleStatus)
     {
-        vehicleStatus = vehicleStatus;
-    }
-    void setVehicleName(string vehicleName)
-    {
-        vehicleName = vehicleName;
+        this->vehicleStatus = vehicleStatus;
     }
 
     // Accessors
-    string getVehicleNumberPlate()
+    const string &getVehicleNumberPlate() const
     {
-        return vehicleNumberPlate;
+        return this->vehicleNumberPlate;
     }
-    string getVehicleType()
+    const string &getVehicleType() const
     {
         return this->vehicleType;
     }
+    // const string &getVehicleName() const
+    // {
+    //     return this->vehicleName;
+    // }
     double getVehicleRent()
     {
         return this->vehicleRent;
@@ -164,10 +172,6 @@ public:
     bool getVehicleStatus()
     {
         return this->vehicleStatus;
-    }
-    string getVehicleName()
-    {
-        return this->vehicleName;
     }
 
     // Destructor
@@ -179,10 +183,10 @@ public:
 
 private:
     string vehicleNumberPlate; // unique
-    string vehicleName;        // name of the vehicle
-    string vehicleType;        // car, bike, etc.
-    double vehicleRent;        // per day
-    bool vehicleStatus;        // true if available, false if not
+    // string vehicleName;        // name of the vehicle
+    string vehicleType; // car, bike, etc.
+    double vehicleRent; // per day
+    bool vehicleStatus; // true if available, false if not
 };
 
 // Scooter class inheriting from Vehicle class
@@ -199,7 +203,6 @@ public:
     {
         setVehicleType("Scooter");
         setVehicleNumberPlate(numberPlate);
-        setVehicleName(name);
         setVehicleRent(rent);
         setVehicleStatus(status);
     }
@@ -217,7 +220,6 @@ public:
     {
         setVehicleType("Bike");
         setVehicleNumberPlate(numberPlate);
-        setVehicleName(name);
         setVehicleRent(rent);
         setVehicleStatus(status);
     }
@@ -259,7 +261,7 @@ public:
         this->age = 0;
     }
     // Parameterized Constructor
-    Customer(int customerId, string name, string phone, string address, int age)
+    Customer(int customerId, const string &name, string phone, string address, int age)
     {
         this->customerId = customerId;
         this->name = name;
@@ -295,23 +297,23 @@ public:
     /* Accessors will help to access a particular information about a particular customer efficiently*/
     int getCustomerId()
     {
-        return this->customerId;
+        return customerId;
     }
-    string getName()
+    const string &getName() const
     {
-        return this->name;
+        return name;
     }
     string getPhone()
     {
-        return this->phone;
+        return phone;
     }
     string getAddress()
     {
-        return this->address;
+        return address;
     }
     int getAge()
     {
-        return this->age;
+        return age;
     }
     // Destructor
     ~Customer()
@@ -383,36 +385,36 @@ public:
     // Accessors
     Vehicle getVehicle()
     {
-        return this->vehicle;
+        return vehicle;
     }
     Customer getCustomer()
     {
-        return this->customer;
+        return customer;
     }
     Date &getStartDate()
     {
-        return this->startDate;
+        return startDate;
     }
     int getDuration(Date &startDate, Date &endDate)
     {
-        this->duration = endDate - startDate;
-        return this->duration;
+        duration = endDate - startDate;
+        return duration;
     }
     Date &getEndDate()
     {
-        return this->endDate;
+        return endDate;
     }
     double getTotalRent()
     {
-        return this->totalRent;
+        return totalRent;
     }
     string getModeOfPayment()
     {
-        return this->modeOfPayment;
+        return modeOfPayment;
     }
     Date getDateOfPayment()
     {
-        return this->dateOfPayment;
+        return dateOfPayment;
     }
 
     // Friend classes
@@ -445,14 +447,14 @@ public:
     // Default Constructor
     Bill() {}
     // Parameterized Constructor
-    Bill(Order &order)
+    Bill(const Order &order)
     {
         this->setOrder(order);
-        double totalRent = order.getDuration(order.getStartDate(), order.getEndDate()) * order.getVehicle().getVehicleRent();
+        double totalRent = this->order.getDuration(this->order.getStartDate(), this->order.getEndDate()) * this->order.getVehicle().getVehicleRent();
         this->setTotalRent(totalRent);
     }
     // Mutators
-    void setOrder(Order &order)
+    void setOrder(const Order &order)
     {
         this->order = order;
     }
@@ -467,7 +469,7 @@ public:
     }
     double getTotalRent()
     {
-        return this->totalRent;
+        return totalRent;
     }
     void printOrder()
     {
@@ -475,7 +477,7 @@ public:
         cout << "             Bill               " << endl;
         cout << "--------------------------------" << endl;
         cout << "Vehicle Number Plate: " << this->order.getVehicle().getVehicleNumberPlate() << endl;
-        cout << "Vehicle Name: " << this->order.getVehicle().getVehicleName() << endl;
+        // cout << "Vehicle Name: " << this->order.getVehicle().getVehicleName() << endl;
         cout << "Vehicle Type: " << this->order.getVehicle().getVehicleType() << endl;
         cout << "Vehicle Rent: " << this->order.getVehicle().getVehicleRent() << endl;
         cout << "Vehicle Status: " << this->order.getVehicle().getVehicleStatus() << endl;
@@ -566,10 +568,10 @@ void registerVehicle()
     string vehicleNumberPlate;
     cin >> vehicleNumberPlate;
     cout << endl;
-    cout << "Enter vehicle name: " << endl;
-    string vehicleName;
-    cin >> vehicleName;
-    cout << endl;
+    // cout << "Enter vehicle name: " << endl;
+    // string vehicleName;
+    // cin >> vehicleName;
+    // cout << endl;
     cout << "Enter vehicle rent: ";
     double vehicleRent;
     cin >> vehicleRent;
@@ -586,12 +588,12 @@ void registerVehicle()
     cin >> vehicleType;
     if (vehicleType == "a")
     {
-        Bike *b = new Bike(vehicleNumberPlate, vehicleName, vehicleRent, vehicleStatus);
+        Bike *b = new Bike(vehicleNumberPlate, vehicleType, vehicleRent, vehicleStatus);
         vehicles[++vehicles_size] = *b;
     }
     else if (vehicleType == "b")
     {
-        Scooter *sc = new Scooter(vehicleNumberPlate, vehicleName, vehicleRent, vehicleStatus);
+        Scooter *sc = new Scooter(vehicleNumberPlate, vehicleType, vehicleRent, vehicleStatus);
         vehicles[++vehicles_size] = *sc;
     }
     cout << "Vehicle registered successfully!" << endl;
@@ -672,7 +674,7 @@ void viewAllVehicles()
     {
         cout << "Vehicle " << i + 1 << endl;
         cout << "Vehicle Number Plate: " << vehicles[i].getVehicleNumberPlate() << endl;
-        cout << "Vehicle Name: " << vehicles[i].getVehicleName() << endl;
+        // cout << "Vehicle Name: " << vehicles[i].getVehicleName() << endl;
         cout << "Vehicle Type: " << vehicles[i].getVehicleType() << endl;
         cout << "Vehicle Rent: " << vehicles[i].getVehicleRent() << endl;
         cout << "Vehicle Status: " << vehicles[i].getVehicleStatus() << endl;
@@ -692,7 +694,7 @@ void viewAllOrders()
     {
         cout << "Order " << i + 1 << endl;
         cout << "Vehicle Number Plate: " << orders[i].getVehicle().getVehicleNumberPlate() << endl;
-        cout << "Vehicle Name: " << orders[i].getVehicle().getVehicleName() << endl;
+        // cout << "Vehicle Name: " << orders[i].getVehicle().getVehicleName() << endl;
         cout << "Vehicle Type: " << orders[i].getVehicle().getVehicleType() << endl;
         cout << "Vehicle Rent: " << orders[i].getVehicle().getVehicleRent() << endl;
         cout << "Vehicle Status: " << orders[i].getVehicle().getVehicleStatus() << endl;
@@ -739,6 +741,9 @@ bool Authentication::authenticate(const string &username, const string &password
 
 int main()
 {
+    vector<Customer> customers;
+    vector<Vehicle> vehicles;
+    vector<Order> orders;
 
     // Welcome message
     cout << "\n--------------------------------" << endl;
@@ -821,3 +826,30 @@ int main()
          << endl;
     return 0;
 }
+
+/*
+vector<Customer> customers;
+    vector<Vehicle> vehicles;
+    vector<Order> orders;
+
+    // Sample data
+    Customer c1(1, "Customer 1", "1234567890", "Address 1", 20);
+    Customer c2(2, "Customer 2", "1234567891", "Address 2", 21);
+    int customers_size = 2;
+    customers.push_back(c1);
+    customers.push_back(c2);
+
+    Vehicle v1("MH 12 AB 1234", "Scooter", 100.0, true);
+    Vehicle v2("MH 12 AB 1237", "Bike", 200.0, true);
+    Vehicle v3("MH 12 AB 1238", "Car", 300.0, true);
+    int vehicles_size = 3;
+    vehicles.push_back(v1);
+    vehicles.push_back(v2);
+    vehicles.push_back(v3);
+
+    Order o1(vehicles[0], customers[0], Date(1, 4, 2023), Date(2, 7, 2023), "Cash", Date(2, 4, 2023));
+    Order o2(vehicles[1], customers[1], Date(1, 5, 2023), Date(2, 11, 2023), "Cash", Date(2, 5, 2023));
+    int orders_size = 2;
+    orders.push_back(o1);
+    orders.push_back(o2);
+*/
