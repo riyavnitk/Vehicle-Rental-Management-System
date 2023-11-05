@@ -115,7 +115,6 @@ public:
     {
         this->vehicleNumberPlate = "XX XX XX XXXX";
         this->vehicleType = "XXXXX";
-        // this->vehicleName = "XXX";
         this->vehicleRent = 0.0;
         this->vehicleStatus = false;
     }
@@ -123,7 +122,6 @@ public:
     Vehicle(const string &vehicleNumberPlate, const string &vehicleType, double vehicleRent, bool vehicleStatus)
     {
         this->vehicleNumberPlate = vehicleNumberPlate;
-        // this->vehicleName = vehicleName;
         this->vehicleType = vehicleType;
         this->vehicleRent = vehicleRent;
         this->vehicleStatus = vehicleStatus;
@@ -131,45 +129,37 @@ public:
     // Static variable to keep track
     static int count;
     // Mutators
-    void setVehicleNumberPlate(string vehicleNumberPlate)
+    virtual void setVehicleNumberPlate(string vehicleNumberPlate)
     {
         this->vehicleNumberPlate = vehicleNumberPlate;
     }
-    void setVehicleType(string vehicleType)
+    virtual void setVehicleType(string vehicleType)
     {
         this->vehicleType = vehicleType;
     }
-    // void setVehicleName(string vehicleName)
-    // {
-    //     this->vehicleName = vehicleName;
-    // }
-    void setVehicleRent(double vehicleRent)
+    virtual void setVehicleRent(double vehicleRent)
     {
         this->vehicleRent = vehicleRent;
     }
-    void setVehicleStatus(bool vehicleStatus)
+    virtual void setVehicleStatus(bool vehicleStatus)
     {
         this->vehicleStatus = vehicleStatus;
     }
 
     // Accessors
-    const string &getVehicleNumberPlate() const
+    virtual const string &getVehicleNumberPlate() const
     {
         return this->vehicleNumberPlate;
     }
-    const string &getVehicleType() const
+    virtual const string &getVehicleType() const
     {
         return this->vehicleType;
     }
-    // const string &getVehicleName() const
-    // {
-    //     return this->vehicleName;
-    // }
-    double getVehicleRent()
+    virtual double getVehicleRent()
     {
         return this->vehicleRent;
     }
-    bool getVehicleStatus()
+    virtual bool getVehicleStatus()
     {
         return this->vehicleStatus;
     }
@@ -181,12 +171,11 @@ public:
         // cout << "Vehicle object deleted" << endl;
     }
 
-private:
+protected:
     string vehicleNumberPlate; // unique
-    // string vehicleName;        // name of the vehicle
-    string vehicleType; // car, bike, etc.
-    double vehicleRent; // per day
-    bool vehicleStatus; // true if available, false if not
+    string vehicleType;        // car, bike, etc.
+    double vehicleRent;        // per day
+    bool vehicleStatus;        // true if available, false if not
 };
 
 // Scooter class inheriting from Vehicle class
@@ -199,12 +188,46 @@ public:
         setVehicleType("Scooter");
     }
     // Parameterized Constructor
-    Scooter(string numberPlate, string name, double rent, bool status)
+    Scooter(string vehicleNumberPlate, string vehicleType, double vehicleRent, bool vehicleStatus)
     {
+        setVehicleNumberPlate(vehicleNumberPlate);
+        setVehicleRent(vehicleRent);
+        setVehicleStatus(vehicleStatus);
         setVehicleType("Scooter");
-        setVehicleNumberPlate(numberPlate);
-        setVehicleRent(rent);
-        setVehicleStatus(status);
+    }
+    // Virtual functions for runtime polymorphism
+    virtual void setVehicleType(string type)
+    {
+        vehicleType = type;
+    }
+    virtual void setVehicleNumberPlate(string numberPlate)
+    {
+        vehicleNumberPlate = numberPlate;
+    }
+    virtual void setVehicleRent(double rent)
+    {
+        vehicleRent = rent;
+    }
+    virtual void setVehicleStatus(bool status)
+    {
+        vehicleStatus = status;
+    }
+    // Accessors virtual functions
+    virtual string getVehicleType()
+    {
+        return vehicleType;
+    }
+    virtual string getVehicleNumberPlate()
+    {
+        return vehicleNumberPlate;
+    }
+    virtual double getVehicleRent()
+    {
+        return vehicleRent;
+    }
+    virtual bool getVehicleStatus()
+    {
+        return vehicleStatus;
     }
 };
 
@@ -212,16 +235,52 @@ public:
 class Bike : public Vehicle
 {
 public:
+    // Default Constructor
     Bike()
     {
         setVehicleType("Bike");
     }
-    Bike(string numberPlate, string name, double rent, bool status)
+    // Parameterized Constructor
+    Bike(string vehicleNumberPlate, string vehicleType, double vehicleRent, bool vehicleStatus)
     {
+        setVehicleNumberPlate(vehicleNumberPlate);
+        setVehicleRent(vehicleRent);
+        setVehicleStatus(vehicleStatus);
         setVehicleType("Bike");
-        setVehicleNumberPlate(numberPlate);
-        setVehicleRent(rent);
-        setVehicleStatus(status);
+    }
+    // Virtual functions for runtime polymorphism
+    virtual void setVehicleType(string type)
+    {
+        vehicleType = type;
+    }
+    virtual void setVehicleNumberPlate(string numberPlate)
+    {
+        vehicleNumberPlate = numberPlate;
+    }
+    virtual void setVehicleRent(double rent)
+    {
+        vehicleRent = rent;
+    }
+    virtual void setVehicleStatus(bool status)
+    {
+        vehicleStatus = status;
+    }
+    // Accessors virtual functions
+    virtual string getVehicleType()
+    {
+        return vehicleType;
+    }
+    virtual string getVehicleNumberPlate()
+    {
+        return vehicleNumberPlate;
+    }
+    virtual double getVehicleRent()
+    {
+        return vehicleRent;
+    }
+    virtual bool getVehicleStatus()
+    {
+        return vehicleStatus;
     }
 };
 
@@ -322,7 +381,7 @@ public:
         // cout << "Customer object deleted" << endl;
     }
 
-private:
+protected:
     int customerId; // unique ID given to a customer to identify the customer without any ambiguity
     string name;    // name
     string phone;   // phone number
@@ -429,7 +488,7 @@ public:
         // cout << "Order object deleted" << endl;
     }
 
-private:
+protected:
     Vehicle vehicle;
     Customer customer;
     Date startDate; // dd/mm/yyyy
@@ -477,7 +536,6 @@ public:
         cout << "             Bill               " << endl;
         cout << "--------------------------------" << endl;
         cout << "Vehicle Number Plate: " << this->order.getVehicle().getVehicleNumberPlate() << endl;
-        // cout << "Vehicle Name: " << this->order.getVehicle().getVehicleName() << endl;
         cout << "Vehicle Type: " << this->order.getVehicle().getVehicleType() << endl;
         cout << "Vehicle Rent: " << this->order.getVehicle().getVehicleRent() << endl;
         cout << "Vehicle Status: " << this->order.getVehicle().getVehicleStatus() << endl;
@@ -497,7 +555,7 @@ public:
         // cout << "Bill object deleted" << endl;
     }
 
-private:
+protected:
     Order order;
     double totalRent;
 };
@@ -545,10 +603,11 @@ Customer registerCustomer()
         cin >> age;
     }
     cout << endl;
-    Customer customer(customerId, name, phone, address, age);
-    customers[++customers_size] = customer;
+    Customer *customer = new Customer(customerId, name, phone, address, age);
+    customers[customers_size++] = *customer;
     cout << "Customer registered successfully!" << endl;
-    return customer;
+    delete customer;
+    return customers[customers_size - 1];
 }
 
 // Register a new vehicle
@@ -562,16 +621,27 @@ void registerVehicle()
     cout << "(b) Scooter" << endl;
     cout << "Enter the vehicle type (a/b): ";
     char ch;
+    string vehicleType;
     cin >> ch;
+    if (ch == 'a')
+    {
+        vehicleType = "Bike";
+    }
+    else if (ch == 'b')
+    {
+        vehicleType = "Scooter";
+    }
+    else
+    {
+        cout << "Invalid choice!" << endl;
+        return;
+    }
+
     cout << endl;
     cout << "Enter vehicle number plate: ";
     string vehicleNumberPlate;
     cin >> vehicleNumberPlate;
     cout << endl;
-    // cout << "Enter vehicle name: " << endl;
-    // string vehicleName;
-    // cin >> vehicleName;
-    // cout << endl;
     cout << "Enter vehicle rent: ";
     double vehicleRent;
     cin >> vehicleRent;
@@ -580,21 +650,15 @@ void registerVehicle()
     bool vehicleStatus;
     cin >> vehicleStatus;
     cout << endl;
-    cout << "Enter the vehicle type:" << endl;
-    cout << "(a) Bike" << endl;
-    cout << "(b) Scooter" << endl;
-    cout << "(a / b) ? " << endl;
-    string vehicleType;
-    cin >> vehicleType;
-    if (vehicleType == "a")
+    if (ch == 'a')
     {
         Bike *b = new Bike(vehicleNumberPlate, vehicleType, vehicleRent, vehicleStatus);
-        vehicles[++vehicles_size] = *b;
+        vehicles[vehicles_size++] = *b;
     }
-    else if (vehicleType == "b")
+    else if (ch == 'b')
     {
         Scooter *sc = new Scooter(vehicleNumberPlate, vehicleType, vehicleRent, vehicleStatus);
-        vehicles[++vehicles_size] = *sc;
+        vehicles[vehicles_size++] = *sc;
     }
     cout << "Vehicle registered successfully!" << endl;
     cout << "\n\n\n"
@@ -634,7 +698,7 @@ void createOrder()
     Date dop = inputDate(dateOfPayment);
     cout << endl;
     Order order(vehicle, c, sd, ed, modeOfPayment, dop);
-    orders[++orders_size] = order;
+    orders[orders_size++] = order;
     cout << "Order created successfully!" << endl;
     // Generate bill
     Bill bill(order);
@@ -741,115 +805,93 @@ bool Authentication::authenticate(const string &username, const string &password
 
 int main()
 {
-    vector<Customer> customers;
-    vector<Vehicle> vehicles;
-    vector<Order> orders;
-
-    // Welcome message
-    cout << "\n--------------------------------" << endl;
-    cout << "Welcome to the Car Rental System" << endl;
-    cout << "--------------------------------" << endl;
-    cout << "Please authenticate yourself to continue.\n\n"
-         << endl;
-
-    // Admin authentication
-    cout << "--------------------------------" << endl;
-    cout << "      Admin Authentication      " << endl;
-    cout << "--------------------------------" << endl;
-    cout << "Enter username: ";
-    string username;
-    cin >> username; // username input from user
-    cout << endl;
-    cout << "Enter password: ";
-    string password;
-    cin >> password; // password input from user
-    cout << endl;
-    Authentication auth; // Authentication object
-    if (!auth.authenticate(username, password))
+    try
     {
-        cout << "Incorrect username or password!" << endl;
-        cout << "Exiting..." << endl;
-        return 0;
-    }
-
-    // Admin menu
-    int choice = 0;
-    do
-    {
+        // Welcome message
         cout << "\n--------------------------------" << endl;
-        cout << "          Admin Menu            " << endl;
+        cout << "Welcome to the Car Rental System" << endl;
         cout << "--------------------------------" << endl;
-        cout << "1. Register a new customer" << endl;
-        cout << "2. Register a new vehicle" << endl;
-        cout << "3. Create an order" << endl;
-        cout << "4. View all orders" << endl;
-        cout << "5. View all customers" << endl;
-        cout << "6. View all vehicles" << endl;
-        cout << "7. Exit\n"
+        cout << "Please authenticate yourself to continue.\n\n"
              << endl;
 
-        // Admin menu choice
-        cout << "Enter your choice: ";
-        cin >> choice;
+        // Admin authentication
+        cout << "--------------------------------" << endl;
+        cout << "      Admin Authentication      " << endl;
+        cout << "--------------------------------" << endl;
+        cout << "Enter username: ";
+        string username;
+        cin >> username; // username input from user
         cout << endl;
-        switch (choice)
+        cout << "Enter password: ";
+        string password;
+        cin >> password; // password input from user
+        cout << endl;
+        Authentication auth; // Authentication object
+        if (!auth.authenticate(username, password))
         {
-        case 1:
-            registerCustomer();
-            break;
-        case 2:
-            registerVehicle();
-            break;
-        case 3:
-            createOrder();
-            break;
-        case 4:
-            viewAllOrders();
-            break;
-        case 5:
-            viewAllCustomers();
-            break;
-        case 6:
-            viewAllVehicles();
-            break;
-
-        default:
-            cout << endl;
-            break;
+            cout << "Incorrect username or password!" << endl;
+            cout << "Exiting..." << endl;
+            return 0;
         }
-    } while (choice > 0 && choice < 7);
 
-    // Exit message
-    cout << "--------------------------------" << endl;
-    cout << "Thank you for using our system!" << endl;
-    cout << "--------------------------------\n"
-         << endl;
-    return 0;
+        // Admin menu
+        int choice = 0;
+        do
+        {
+            cout << "\n--------------------------------" << endl;
+            cout << "          Admin Menu            " << endl;
+            cout << "--------------------------------" << endl;
+            cout << "1. Register a new customer" << endl;
+            cout << "2. Register a new vehicle" << endl;
+            cout << "3. Create an order" << endl;
+            cout << "4. View all orders" << endl;
+            cout << "5. View all customers" << endl;
+            cout << "6. View all vehicles" << endl;
+            cout << "7. Exit\n"
+                 << endl;
+
+            // Admin menu choice
+            cout << "Enter your choice: ";
+            cin >> choice;
+            cout << endl;
+            switch (choice)
+            {
+            case 1:
+                registerCustomer();
+                break;
+            case 2:
+                registerVehicle();
+                break;
+            case 3:
+                createOrder();
+                break;
+            case 4:
+                viewAllOrders();
+                break;
+            case 5:
+                viewAllCustomers();
+                break;
+            case 6:
+                viewAllVehicles();
+                break;
+
+            default:
+                cout << endl;
+                break;
+            }
+        } while (choice > 0 && choice < 7);
+
+        // Exit message
+        cout << "--------------------------------" << endl;
+        cout << "Thank you for using our system!" << endl;
+        cout << "--------------------------------\n"
+             << endl;
+        return 0;
+    }
+    catch (const exception &ex)
+    {
+        cerr << "Error: " << ex.what() << endl;
+    }
+
+    return 1; // Return a non-zero value to indicate an error
 }
-
-/*
-vector<Customer> customers;
-    vector<Vehicle> vehicles;
-    vector<Order> orders;
-
-    // Sample data
-    Customer c1(1, "Customer 1", "1234567890", "Address 1", 20);
-    Customer c2(2, "Customer 2", "1234567891", "Address 2", 21);
-    int customers_size = 2;
-    customers.push_back(c1);
-    customers.push_back(c2);
-
-    Vehicle v1("MH 12 AB 1234", "Scooter", 100.0, true);
-    Vehicle v2("MH 12 AB 1237", "Bike", 200.0, true);
-    Vehicle v3("MH 12 AB 1238", "Car", 300.0, true);
-    int vehicles_size = 3;
-    vehicles.push_back(v1);
-    vehicles.push_back(v2);
-    vehicles.push_back(v3);
-
-    Order o1(vehicles[0], customers[0], Date(1, 4, 2023), Date(2, 7, 2023), "Cash", Date(2, 4, 2023));
-    Order o2(vehicles[1], customers[1], Date(1, 5, 2023), Date(2, 11, 2023), "Cash", Date(2, 5, 2023));
-    int orders_size = 2;
-    orders.push_back(o1);
-    orders.push_back(o2);
-*/
